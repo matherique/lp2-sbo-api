@@ -22,7 +22,7 @@ func NewStore() Store {
 }
 
 func (s *store) Connect() error {
-	db, err := sql.Open("postgres", "postgres://postgres:123@localhost/sbo?sslmode=disable")
+	db, err := sql.Open("postgres", "postgres://postgres:123@database/sbo?sslmode=disable")
 
 	if err = db.Ping(); err != nil {
 		db.Close()
