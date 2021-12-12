@@ -32,6 +32,7 @@ func main() {
 	go func() {
 		oscall := <-c
 		log.Printf("system call: %+v", oscall)
+		store.Close()
 		cancel()
 	}()
 

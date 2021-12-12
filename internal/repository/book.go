@@ -1,9 +1,12 @@
 package repository
 
-import "github.com/matherique/lp2-sbo-api/pkg/store"
+import (
+	"github.com/matherique/lp2-sbo-api/internal/models"
+	"github.com/matherique/lp2-sbo-api/pkg/store"
+)
 
 type BookRepo interface {
-	// New(dto.NewBook) (*model.Book, error)
+	Create(book models.Book) (*models.Book, error)
 }
 
 type bookRepo struct {
@@ -16,4 +19,8 @@ func NewBookRepo(store store.Store) BookRepo {
 	br.store = store
 
 	return br
+}
+
+func (br *bookRepo) Create(book models.Book) (*models.Book, error) {
+	return nil, nil
 }
