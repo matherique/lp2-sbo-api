@@ -2,6 +2,10 @@
 
 > API para o trabalho de LP2 
 
+## Entitys 
+
+> check all entity in [https://excalidraw.com/#json=FzJIjkvNyN_CnS_v9FcY0,aVEP5REsacdKf_18Ftukjg](https://excalidraw.com/#json=FzJIjkvNyN_CnS_v9FcY0,aVEP5REsacdKf_18Ftukjg)
+
 ## TODO 
 
 ### Book 
