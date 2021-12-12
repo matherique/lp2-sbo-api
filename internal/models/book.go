@@ -7,6 +7,7 @@ import (
 type Book struct {
 	Id          int       `json:"id,omitempty"`
 	Name        string    `json:"name,omitempty"`
+	Photo       string    `json:"photo,omitempty"`
 	AuthorId    int       `json:"author_id,omitempty"`
 	ShortDesc   string    `json:"short_desc,omitempty"`
 	Longdesc    string    `json:"long_desc,omitempty"`
