@@ -4,12 +4,19 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/matherique/lp2-sbo-api/internal/app/book"
+	"github.com/matherique/lp2-sbo-api/internal/repository"
+	"github.com/matherique/lp2-sbo-api/pkg/store"
 )
 
-func loadRoutes(srv *http.ServeMux) *http.ServeMux {
+func loadRoutes(srv *http.ServeMux, store store.Store) *http.ServeMux {
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
-	srv.Handle("/book", newBookApi(logger))
+	repo := repository.NewBookRepo(store)
+	app := book.New(repo)
+
+	srv.Handle("/books", newBookApi(logger, app))
 
 	return srv
 }

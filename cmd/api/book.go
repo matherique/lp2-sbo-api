@@ -20,9 +20,10 @@ var urlpattern = map[string]*regexp.Regexp{
 	"/": regexp.MustCompile(`^\/books[\/]*$`),
 }
 
-func newBookApi(logger *log.Logger) *bookApi {
+func newBookApi(logger *log.Logger, app book.Book) *bookApi {
 	ba := new(bookApi)
 	ba.log = logger
+	ba.app = app
 
 	return ba
 }
@@ -35,6 +36,8 @@ func (b *bookApi) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch true {
 	case r.Method == "GET" && urlpattern["/"].MatchString(r.URL.Path):
 		err = b.getAll(w, r)
+	case r.Method == "POST" && urlpattern["/"].MatchString(r.URL.Path):
+		err = b.create(w, r)
 	default:
 		err = errors.NewHttp(http.StatusNotFound, "not found")
 	}

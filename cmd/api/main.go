@@ -8,13 +8,20 @@ import (
 	"os/signal"
 
 	server "github.com/matherique/lp2-sbo-api/pkg/http_server"
+	"github.com/matherique/lp2-sbo-api/pkg/store"
 )
 
 const port = ":5000"
 
 func main() {
 	mux := http.NewServeMux()
-	loadRoutes(mux)
+
+	store := store.NewStore()
+	if err := store.Connect(); err != nil {
+		log.Fatal(err)
+	}
+
+	loadRoutes(mux, store)
 
 	srv := server.NewServer(port, mux)
 	c := make(chan os.Signal, 1)
