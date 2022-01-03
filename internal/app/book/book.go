@@ -2,6 +2,7 @@ package book
 
 import (
 	"context"
+	"log"
 
 	"github.com/matherique/lp2-sbo-api/internal/dto"
 	"github.com/matherique/lp2-sbo-api/internal/models"
@@ -14,10 +15,12 @@ type Book interface {
 
 type book struct {
 	repo repository.BookRepo
+	log  *log.Logger
 }
 
-func New(repo repository.BookRepo) *book {
+func New(repo repository.BookRepo, log *log.Logger) *book {
 	b := new(book)
+	b.log = log
 	b.repo = repo
 
 	return b

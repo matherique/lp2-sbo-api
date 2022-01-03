@@ -22,6 +22,7 @@ var urlpattern = map[string]*regexp.Regexp{
 
 func newBookApi(logger *log.Logger, app book.Book) *bookApi {
 	ba := new(bookApi)
+	logger.SetPrefix("[Book] ")
 	ba.log = logger
 	ba.app = app
 
@@ -29,7 +30,7 @@ func newBookApi(logger *log.Logger, app book.Book) *bookApi {
 }
 
 func (b *bookApi) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	b.log.Printf("[BOOK] %s - %s\n", r.Method, r.URL.Path)
+	b.log.Printf("%s - %s\n", r.Method, r.URL.Path)
 
 	var err error
 

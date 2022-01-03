@@ -11,6 +11,7 @@ import (
 
 func (b *book) New(ctx context.Context, data dto.ReqNewBook) (*models.Book, error) {
 	if err := validate(data); err != nil {
+		b.log.Printf("invalid data: %+v", err)
 		return nil, err
 	}
 
