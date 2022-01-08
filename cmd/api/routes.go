@@ -14,7 +14,7 @@ func loadRoutes(srv *http.ServeMux, store store.Store) *http.ServeMux {
 	logger := log.New(os.Stdout, "[APP] ", log.LstdFlags|log.Lmsgprefix)
 
 	repo := repository.NewBookRepo(store)
-	app := book.New(repo)
+	app := book.New(repo, logger)
 
 	srv.Handle("/books", newBookApi(logger, app))
 
