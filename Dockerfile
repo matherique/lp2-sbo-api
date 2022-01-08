@@ -1,13 +1,17 @@
-FROM golang
+FROM golang:alpine AS builder
 
-WORKDIR /app
+WORKDIR /app 
 
-COPY go.mod ./
-COPY go.sum ./
+COPY . .
+
 RUN go mod download
 
-COPY . . 
+RUN go build ./cmd/api 
 
-RUN go install ./cmd/api
+FROM alpine
+WORKDIR /app
 
-CMD [ "api" ]
+COPY --from=builder /app/api .
+
+ENTRYPOINT ["/app/api"]
+
