@@ -17,6 +17,12 @@ func loadRoutes(srv *http.ServeMux, store store.Store) *http.ServeMux {
 	app := book.New(repo, logger)
 
 	srv.Handle("/books", newBookApi(logger, app))
+	srv.HandleFunc("/healthcheck", healthcheck)
 
 	return srv
+}
+
+func healthcheck(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"status":"ok"}`))
 }
