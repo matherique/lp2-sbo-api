@@ -7,7 +7,7 @@ import (
 	"os/signal"
 
 	"github.com/matherique/lp2-sbo-api/pkg/config"
-	server "github.com/matherique/lp2-sbo-api/pkg/http_server"
+	server "github.com/matherique/lp2-sbo-api/pkg/http"
 	"github.com/matherique/lp2-sbo-api/pkg/store"
 	"github.com/matherique/lp2-sbo-api/pkg/utils"
 )

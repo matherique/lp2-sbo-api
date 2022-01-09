@@ -9,7 +9,7 @@ import (
 	"github.com/matherique/lp2-sbo-api/internal/app/book"
 	"github.com/matherique/lp2-sbo-api/internal/dto"
 	"github.com/matherique/lp2-sbo-api/pkg/errors"
-	server "github.com/matherique/lp2-sbo-api/pkg/http_server"
+	server "github.com/matherique/lp2-sbo-api/pkg/http"
 	"github.com/matherique/lp2-sbo-api/pkg/utils"
 )
 
