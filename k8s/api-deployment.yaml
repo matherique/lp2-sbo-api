@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-sob-deployment
+  labels:
+    app: api-sob
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-sob
+  template:
+    metadata:
+      labels:
+        app: api-sob
+    spec:
+      containers:
+      - name: api-sob
+        image: api-sob
+        imagePullPolicy: Never
+        ports:
+          - containerPort: 5000
+        env:
+          - name: APP_PORT
+            value: "5000"
+
+          - name: DATABASE_HOST
+            value: "postgres-service"
+
+          - name: DATABASE_PORT
+            value: "5432"
+
+          - name: DATABASE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres-username
+
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres-password
+
+          - name: DATABASE_DBNAME
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres-dbname
+
