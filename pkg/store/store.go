@@ -13,19 +13,34 @@ type Store interface {
 }
 
 type store struct {
-	db *sql.DB
+	db       *sql.DB
+	host     string
+	port     string
+	database string
+	username string
+	password string
 }
 
-func NewStore() Store {
+func NewStore(host, port, database, username, password string) Store {
 	s := new(store)
+	s.host = host
+	s.port = port
+	s.database = database
+	s.username = username
+	s.password = password
 
 	return s
+}
+
+func (s *store) getConString() string {
+	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", s.username, s.password, s.host, s.port, s.database)
+
 }
 
 func (s *store) Connect() error {
 	db, err := sql.Open(
 		"postgres",
-		"postgres://postgres:123@database/sbo?sslmode=disable",
+		s.getConString(),
 	)
 
 	if err != nil {
