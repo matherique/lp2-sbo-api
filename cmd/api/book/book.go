@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/json"
@@ -9,6 +9,7 @@ import (
 	"github.com/matherique/lp2-sbo-api/internal/app/book"
 	"github.com/matherique/lp2-sbo-api/internal/dto"
 	"github.com/matherique/lp2-sbo-api/pkg/errors"
+	server "github.com/matherique/lp2-sbo-api/pkg/http_server"
 )
 
 type bookApi struct {
@@ -20,7 +21,7 @@ var urlpattern = map[string]*regexp.Regexp{
 	"/": regexp.MustCompile(`^\/books[\/]*$`),
 }
 
-func newBookApi(logger *log.Logger, app book.Book) *bookApi {
+func NewBookApi(logger *log.Logger, app book.Book) *bookApi {
 	ba := new(bookApi)
 	logger.SetPrefix("[Book] ")
 	ba.log = logger
@@ -44,8 +45,7 @@ func (b *bookApi) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		httpError(w, err)
-		return
+		server.HttpError(w, err)
 	}
 }
 
@@ -66,6 +66,6 @@ func (b *bookApi) create(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	created(w, resp)
+	server.Created(w, resp)
 	return nil
 }
