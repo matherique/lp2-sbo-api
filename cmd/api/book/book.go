@@ -10,6 +10,7 @@ import (
 	"github.com/matherique/lp2-sbo-api/internal/dto"
 	"github.com/matherique/lp2-sbo-api/pkg/errors"
 	server "github.com/matherique/lp2-sbo-api/pkg/http_server"
+	"github.com/matherique/lp2-sbo-api/pkg/utils"
 )
 
 type bookApi struct {
@@ -21,10 +22,9 @@ var urlpattern = map[string]*regexp.Regexp{
 	"/": regexp.MustCompile(`^\/books[\/]*$`),
 }
 
-func NewBookApi(logger *log.Logger, app book.Book) *bookApi {
+func NewBookApi(app book.Book) *bookApi {
 	ba := new(bookApi)
-	logger.SetPrefix("[Book] ")
-	ba.log = logger
+	ba.log = utils.NewLogger("Book")
 	ba.app = app
 
 	return ba

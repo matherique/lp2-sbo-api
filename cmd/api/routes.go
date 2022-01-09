@@ -1,9 +1,7 @@
 package main
 
 import (
-	"log"
 	"net/http"
-	"os"
 
 	api "github.com/matherique/lp2-sbo-api/cmd/api/book"
 	"github.com/matherique/lp2-sbo-api/internal/app/book"
@@ -11,10 +9,9 @@ import (
 )
 
 func loadRoutes(srv *http.ServeMux, store store.Store) *http.ServeMux {
-	logger := log.New(os.Stdout, "[APP] ", log.LstdFlags|log.Lmsgprefix)
-
 	srv.HandleFunc("/healthcheck", healthcheck)
-	srv.Handle("/books", api.NewBookApi(logger, book.MakeBookApp(store)))
+
+	srv.Handle("/books", api.NewBookApi(book.MakeBookApp(store)))
 
 	return srv
 }

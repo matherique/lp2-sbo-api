@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,12 +9,15 @@ import (
 	"github.com/matherique/lp2-sbo-api/pkg/config"
 	server "github.com/matherique/lp2-sbo-api/pkg/http_server"
 	"github.com/matherique/lp2-sbo-api/pkg/store"
+	"github.com/matherique/lp2-sbo-api/pkg/utils"
 )
 
 func main() {
 	mux := http.NewServeMux()
 
 	config, err := config.Read()
+
+	log := utils.NewLogger("APP")
 
 	if err != nil {
 		log.Fatalf("could not read config: %v", err)
