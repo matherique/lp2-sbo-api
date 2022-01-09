@@ -1,6 +1,10 @@
 package dto
 
-import "github.com/matherique/lp2-sbo-api/internal/models"
+import (
+	"fmt"
+
+	"github.com/matherique/lp2-sbo-api/internal/models"
+)
 
 type ReqNewBook struct {
 	Name        string `json:"name"`
@@ -22,4 +26,23 @@ func (rnw ReqNewBook) ToBook() *models.Book {
 		PaperBack:   rnw.PaperBack,
 		PublisherId: rnw.PublisherId,
 	}
+}
+
+func (rnw *ReqNewBook) Validate() error {
+	switch true {
+	case rnw.Name == "":
+		return fmt.Errorf("missing name")
+	case rnw.ShortDesc == "":
+		return fmt.Errorf("missing short_desc")
+	case rnw.PaperBack == 0:
+		return fmt.Errorf("missing paperback")
+	case rnw.PublisherId == 0:
+		return fmt.Errorf("missing publisher_id")
+	case rnw.AuthorId == 0:
+		return fmt.Errorf("missing author_id")
+	case rnw.CategoryId == 0:
+		return fmt.Errorf("missing category_id")
+	}
+
+	return nil
 }
