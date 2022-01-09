@@ -7,6 +7,7 @@ import (
 	"github.com/matherique/lp2-sbo-api/internal/dto"
 	"github.com/matherique/lp2-sbo-api/internal/models"
 	"github.com/matherique/lp2-sbo-api/internal/repository"
+	"github.com/matherique/lp2-sbo-api/pkg/utils"
 )
 
 type Book interface {
@@ -18,9 +19,9 @@ type book struct {
 	log  *log.Logger
 }
 
-func New(repo repository.BookRepo, log *log.Logger) *book {
+func New(repo repository.BookRepo) *book {
 	b := new(book)
-	b.log = log
+	b.log = utils.NewLogger("Book")
 	b.repo = repo
 
 	return b

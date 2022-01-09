@@ -5,17 +5,21 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/matherique/lp2-sbo-api/pkg/utils"
 )
 
 type Server struct {
 	mux  *http.ServeMux
 	port string
+	log  *log.Logger
 }
 
 func NewServer(port string, mux *http.ServeMux) *Server {
 	s := new(Server)
 	s.mux = mux
 	s.port = port
+	s.log = utils.NewLogger("Server")
 
 	return s
 }
@@ -28,15 +32,15 @@ func (srv *Server) Start(ctx context.Context, mux *http.ServeMux) error {
 
 	go func() {
 		if err := s.ListenAndServe(); err != nil {
-			log.Fatal(err)
+			srv.log.Fatal(err)
 		}
 	}()
 
-	log.Printf("server start in: localhost%s\n", srv.port)
+	srv.log.Printf("server start in: localhost%s\n", srv.port)
 
 	<-ctx.Done()
 
-	log.Println("server stoped")
+	srv.log.Println("server stoped")
 
 	ctxSD, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
@@ -48,7 +52,7 @@ func (srv *Server) Start(ctx context.Context, mux *http.ServeMux) error {
 		return err
 	}
 
-	log.Printf("server exited properly")
+	srv.log.Printf("server exited properly")
 
 	return nil
 }
