@@ -11,7 +11,7 @@ import (
 )
 
 type Book interface {
-	New(context.Context, dto.ReqNewBook) (*models.Book, error)
+	Create(context.Context, dto.ReqNewBook) (*models.Book, error)
 }
 
 type book struct {

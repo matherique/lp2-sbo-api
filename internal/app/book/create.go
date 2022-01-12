@@ -9,7 +9,7 @@ import (
 	"github.com/matherique/lp2-sbo-api/pkg/errors"
 )
 
-func (b *book) New(ctx context.Context, data dto.ReqNewBook) (*models.Book, error) {
+func (b *book) Create(ctx context.Context, data dto.ReqNewBook) (*models.Book, error) {
 	if err := data.Validate(); err != nil {
 		b.log.Printf("invalid data: %+v", err)
 		return nil, errors.NewHttp(http.StatusBadRequest, err.Error())

@@ -60,7 +60,7 @@ func (b *bookApi) create(w http.ResponseWriter, r *http.Request) error {
 		return errors.NewHttp(http.StatusBadRequest, err.Error())
 	}
 
-	resp, err := b.app.New(r.Context(), data)
+	resp, err := b.app.Create(r.Context(), data)
 
 	if err != nil {
 		return err
