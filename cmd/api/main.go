@@ -24,11 +24,7 @@ func main() {
 	}
 
 	store := store.NewStore(
-		config.DATABASE_HOST,
-		config.DATABASE_PORT,
-		config.DATABASE_DBNAME,
-		config.DATABASE_USERNAME,
-		config.DATABASE_PASSWORD,
+		config.CONNECTION_STRING,
 	)
 
 	if err := store.Connect(); err != nil {
