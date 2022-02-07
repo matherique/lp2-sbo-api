@@ -2,32 +2,39 @@ package http
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"regexp"
 	"time"
 
 	"github.com/matherique/lp2-sbo-api/pkg/utils"
 )
 
 type Server struct {
-	mux  *http.ServeMux
 	port string
 	log  *log.Logger
+
+	routes map[string]http.Handler
 }
 
-func NewServer(port string, mux *http.ServeMux) *Server {
+func NewServer(port string) *Server {
 	s := new(Server)
-	s.mux = mux
 	s.port = port
 	s.log = utils.NewLogger("Server")
+	s.routes = make(map[string]http.Handler)
 
 	return s
 }
 
-func (srv *Server) Start(ctx context.Context, mux *http.ServeMux) error {
+type Routes interface {
+	Routes() map[string]http.Handler
+}
+
+func (srv *Server) Start(ctx context.Context) error {
 	s := http.Server{
 		Addr:    srv.port,
-		Handler: srv.mux,
+		Handler: srv,
 	}
 
 	go func() {
@@ -55,4 +62,36 @@ func (srv *Server) Start(ctx context.Context, mux *http.ServeMux) error {
 	srv.log.Printf("server exited properly")
 
 	return nil
+}
+
+func (srv *Server) Add(re string, handler http.Handler) error {
+	if _, err := regexp.Compile(re); err != nil {
+		return fmt.Errorf("could not compile %q regexp : %v", re, err)
+	}
+
+	srv.routes[re] = handler
+
+	return nil
+}
+
+func (srv *Server) AddAll(routes Routes) error {
+	for re, handler := range routes.Routes() {
+		if err := srv.Add(re, handler); err != nil {
+			return err
+		}
+
+	}
+	return nil
+}
+
+func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	for regex, handler := range srv.routes {
+		route := fmt.Sprintf("%s %s", r.Method, r.URL.Path)
+		if regexp.MustCompile(regex).MatchString(route) {
+			handler.ServeHTTP(w, r)
+			return
+		}
+	}
+
+	http.NotFound(w, r)
 }

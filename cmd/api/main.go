@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"net/http"
 	"os"
 	"os/signal"
 
@@ -13,8 +12,6 @@ import (
 )
 
 func main() {
-	mux := http.NewServeMux()
-
 	config, err := config.Read()
 
 	log := utils.NewLogger("APP")
@@ -31,9 +28,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	loadRoutes(mux, store)
+	srv := server.NewServer(config.APP_PORT)
 
-	srv := server.NewServer(config.APP_PORT, mux)
+	loadRoutes(srv, store)
+
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 
@@ -46,7 +44,7 @@ func main() {
 		cancel()
 	}()
 
-	if err := srv.Start(ctx, mux); err != nil {
+	if err := srv.Start(ctx); err != nil {
 		log.Fatal(err)
 	}
 }

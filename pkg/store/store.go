@@ -10,6 +10,7 @@ import (
 type Store interface {
 	Connect() error
 	Close() error
+	DB() *sql.DB
 }
 
 type store struct {
@@ -41,6 +42,10 @@ func (s *store) Connect() error {
 
 	s.db = db
 	return nil
+}
+
+func (s *store) DB() *sql.DB {
+	return s.db
 }
 
 func (s *store) Close() error {
